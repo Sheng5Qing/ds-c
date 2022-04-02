@@ -123,7 +123,7 @@ Status GetElem_L(LinkList L,int i,ElemType &e){
 		p = p->next;
 		j++;
 	}
-	if(!p || j > i){ //若第i个元素不存在？？若while循环里已经要求j<i了，那么后面判断j>i有什么意义呢？？
+	if(!p || j > i){ //若第i个元素不存在
 		return ERROR;
 	}
 	e = p->data;
