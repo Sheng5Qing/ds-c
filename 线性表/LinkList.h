@@ -50,12 +50,6 @@ void CreateList_H(LinkList &L,int n);
 void CreateList_R(LinkList &L,int n);
 
 
-int main(){
-    
-    
-    return 0;
-}
-
 //单链表的初始化
 /*
 1. 生成新结点作为头结点，用头指针指向头结点
