@@ -14,7 +14,7 @@ using namespace std;
 
 
 typedef int Status;       //返回状态
-typedef char ElemType;    //元素类型
+typedef int ElemType;    //元素类型
 
 typedef struct LNode{
 	ElemType data;
@@ -48,7 +48,6 @@ Status ListDelete_L(LinkList &L, int i, ElemType &e);
 void CreateList_H(LinkList &L,int n);
 //尾插法
 void CreateList_R(LinkList &L,int n);
-
 
 //单链表的初始化
 /*

@@ -10,7 +10,7 @@
 #define MAXSIZE 100
 
 typedef int Status;
-typedef char ElemType;
+typedef int ElemType;
 
 #include<stdio.h>
 #include<stdlib.h>
@@ -27,7 +27,7 @@ typedef char ElemType;
 3. 属于静态存储形式，数据元素的个数不能自由扩充
 */
 typedef struct {
-	ElemType* elem;
+	ElemType* elem;  //存储空间基地址
 	int length;
 }SqList;//（sequence - 顺序）顺序表
 
