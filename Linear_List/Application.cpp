@@ -62,26 +62,26 @@ void MergeList_L(LinkList &La,LinkList &Lb, LinkList &Lc){
 
 int main(){
     //顺序表实现有序表的合并
-    // SqList La,Lb,Lc;
-    // InitList_Sq(La);
-    // InitList_Sq(Lb);
-    // InitList_Sq(Lc);
-    // ListInsert(La,1,3);
-    // ListInsert(La,2,5);
-    // ListInsert(La,3,8);
-    // ListInsert(La,4,11);
-    // ListInsert(Lb,1,2);
-    // ListInsert(Lb,2,6);
-    // ListInsert(Lb,3,8);
-    // ListInsert(Lb,4,9);
-    // ListInsert(Lb,5,11);
-    // ListInsert(Lb,6,15);
-    // ListInsert(Lb,7,20);
-    // MergeList_Sq(La,Lb,Lc);
-    // ElemType* pc = Lc.elem;
-    // for(int i = 0;i < Lc.length;i++){
-    //     printf("%d ",*pc++);
-    // }
+    SqList La,Lb,Lc;
+    InitList_Sq(La);
+    InitList_Sq(Lb);
+    InitList_Sq(Lc);
+    ListInsert(La,1,3);
+    ListInsert(La,2,5);
+    ListInsert(La,3,8);
+    ListInsert(La,4,11);
+    ListInsert(Lb,1,2);
+    ListInsert(Lb,2,6);
+    ListInsert(Lb,3,8);
+    ListInsert(Lb,4,9);
+    ListInsert(Lb,5,11);
+    ListInsert(Lb,6,15);
+    ListInsert(Lb,7,20);
+    MergeList_Sq(La,Lb,Lc);
+    ElemType* pc = Lc.elem;
+    for(int i = 0;i < Lc.length;i++){
+        printf("%d ",*pc++);
+    }
 
 
     return 0;
