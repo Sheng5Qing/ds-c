@@ -230,7 +230,7 @@ int main() {
             break;
         case 6:
             printf("%-10s%-10s%-10s%-10s%-10s%-10s%-10s\n", "姓名", "学号", "年龄", "性别", "语文成绩", "数学成绩", "英语成绩");
-            for (int i = 1; i <= ListLength_L(L) + 1; i++) {
+            for (int i = 1; i < ListLength_L(L) + 1; i++) {
                 PrintStu(L, i);
             }
             break;
