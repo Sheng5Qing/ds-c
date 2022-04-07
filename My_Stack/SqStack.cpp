@@ -138,5 +138,6 @@ Status Pop(SqStack &S,SElemType &e){
 SElemType GetTop(SqStack S){
     if(S.top != S.base)
         return *(S.top - 1);
+    return '0';
 }
 
