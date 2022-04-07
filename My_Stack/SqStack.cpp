@@ -30,6 +30,15 @@ typedef struct SqStack{
 //顺序栈的初始化
 Status InitStack(SqStack &S);
 
+//判断栈空
+Status StackEmpty(SqStack S);
+
+//清空顺序栈
+Status ClearStack(SqStack S);
+
+//销毁顺序栈
+Status DestoryStack(SqStack &S);
+
 //顺序栈的入栈
 Status Push(SqStack &S,SElemType e);
 
@@ -38,6 +47,24 @@ Status Pop(SqStack &S,SElemType &e);
 
 //取栈顶元素
 SElemType GetTop(SqStack S);
+
+
+int main(){
+    SqStack s;
+    InitStack(s);
+    Push(s,'o');
+    Push(s,'l');
+    Push(s,'l');
+    Push(s,'e');
+    Push(s,'h');
+    char e;
+    for(int i = 0; i < 5; i++){
+        Pop(s,e);
+        printf("%c",e);
+    }
+
+    return 0;
+}
 
 //顺序栈的初始化
 /*
@@ -53,13 +80,45 @@ Status InitStack(SqStack &S){
     return OK;
 }
 
+//判断栈空
+Status StackEmpty(SqStack S){
+    if(S.base == S.top){
+        return OK;
+    }
+    else{
+        return ERROR;
+    }
+}
+
+//清空顺序栈
+Status ClearStack(SqStack S){
+    if(S.base) S.top = S.base;
+    return OK;
+}
+
+//销毁顺序栈
+Status DestoryStack(SqStack &S){
+    if(S.base){
+        delete S.base;
+        S.top = NULL;
+        S.base = S.top;
+        return OK;
+    }else{
+        return ERROR;
+    }
+    
+}
+
 //顺序栈的入栈
 /*
 1、判断栈是否满，若满，返回ERROR
 2、将新元素压入栈中，top指针后移
 */
 Status Push(SqStack &S,SElemType e){
-    if(S.top - S.base == S.stacksize) return ERROR;
+    //两个指针相减，得到两指针之间的元素个数
+    if(S.top - S.base == S.stacksize) return ERROR; //判断栈是否满
+    //*S.top = e;
+    //S.top++;
     *S.top++ = e;
     return OK;
 }
@@ -77,7 +136,7 @@ Status Pop(SqStack &S,SElemType &e){
 
 //取栈顶元素
 SElemType GetTop(SqStack S){
-    if(S.top != S.base){
+    if(S.top != S.base)
         return *(S.top - 1);
-    }
 }
+
