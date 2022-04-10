@@ -26,7 +26,7 @@ typedef struct{
 //生成字符串
 Status StrAssign(SString &T, char chars[]);
 
-//复制字符串、
+//复制字符串
 Status StrCopy(SString &T, const SString S);
 
 //字符串判空
@@ -44,6 +44,9 @@ Status Contact(SString &T, const SString S1, const SString S2);
 //字符串分割
 //返回串S的第pos个字符起长度为len的子串
 Status SubString(SString &Sub, const SString S, int pos, int len);
+
+//打印字符串
+void PrintStr(const SString S);
 
 //串的模式匹配算法——BF算法
 
@@ -65,24 +68,80 @@ Status StrDelete(SString &S, int pos, int len);
 Status DeleteString(SString &S);
 
 int main(){
-    SString s;
+    SString s1;
+    SString s2;
     char p[] = "hello";
-    StrAssign(s,p);
+    StrAssign(s1,p);
+    StrCopy(s2,s1);
     //不加（char*）会报编译错误：ISO C++ forbids converting a string constant to 'char*'
     //StrAssign(s,(char*)"hello");
-    printf("%s\n",s.ch);
+    PrintStr(s1);
+    printf("\n");
+    PrintStr(s2);
     
     return 0;
 }
 
 //生成字符串
 Status StrAssign(SString &T,char chars[]){
+    T.length = 0;
     int i = 1;
     while(chars[i - 1] != '\0'){
         T.ch[i] = chars[i - 1];
         i++;
+        T.length++;
     }
     return OK;
 }
 
+//复制字符串
+Status StrCopy(SString &T, const SString S){
+    if(S.length == 0) return ERROR;
+    for(int i = 1; i <= S.length; i++){
+        T.ch[i] = S.ch[i];
+    }
+    T.length = S.length;
+    return OK;
+}
 
+//字符串判空
+Status StrEmpty(const SString S){
+    if(S.length == 0) return TRUE;
+    else return FAlSE;
+}
+
+//清空字符串
+Status ClearString(SString &S){
+    for(int i = 1; i <= S.length; i++){
+        S.ch[i] = '\0';
+    }
+}
+
+//字符串连接
+Status Contact(SString &T, const SString S1, const SString S2){
+    if(S2.length == 0) return ERROR;
+    StrCopy(T,S1);
+    int j = 1;
+    for(int i = T.length + 1; i <= T.length + 1 + S2.length; i++){
+        T.ch[i] = S2.ch[j++];
+    }
+    return OK;
+}
+
+//字符串分割
+//返回串S的第pos个字符起长度为len的子串
+Status SubString(SString &Sub, const SString S, int pos, int len){
+    if(S.length == 0)  return ERROR;
+    int j = 1;
+    for(int i = pos; i <= pos + len; i++){
+        Sub.ch[j++] = S.ch[i];
+    }
+    return OK;
+}
+
+//打印字符串
+void PrintStr(const SString S){
+    for(int i = 1; i <= S.length + 1; i++){
+        printf("%c", S.ch[i]);
+    }
+}
