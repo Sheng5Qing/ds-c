@@ -49,7 +49,7 @@ Status SubString(SString &Sub, const SString S, int pos, int len);
 void PrintStr(const SString S);
 
 //串的模式匹配算法——BF算法
-
+int Index_BF(const SString S, const SString T);
 //KMP算法
 
 //若主串S中存在与串T值相同的子串，则返回它在主串S中第pos个字符之后第一次出现的位置；否则返回0
@@ -78,6 +78,13 @@ int main(){
     PrintStr(s1);
     printf("\n");
     PrintStr(s2);
+    printf("\n");
+    SString index1;
+    StrAssign(index1,(char*)"aaaaab");
+    SString index2;
+    StrAssign(index2,(char*)"aaab");
+    //若使用中文内置终端无法调试
+    printf("\"aaab\" is positioned in the %d positon of \"aaaaab\"",Index_BF(index1,index2));
     
     return 0;
 }
@@ -115,6 +122,7 @@ Status ClearString(SString &S){
     for(int i = 1; i <= S.length; i++){
         S.ch[i] = '\0';
     }
+    return OK;
 }
 
 //字符串连接
@@ -144,4 +152,23 @@ void PrintStr(const SString S){
     for(int i = 1; i <= S.length + 1; i++){
         printf("%c", S.ch[i]);
     }
+}
+
+//串的模式匹配算法——BF算法
+int Index_BF(const SString S, const SString T){
+    int i = 1;  //串S的游标
+    int j = 1;  //串T的游标
+    while(T.ch[j] != '\0'){
+        if(S.ch[i] == T.ch[j]){
+            i++;
+            j++;
+        }else{
+            i = i - j + 2;
+            j = 1;
+            if(i > S.length - T.length + 1){
+                return 0;
+            }
+        }
+    }
+    return (i - T.length);
 }
