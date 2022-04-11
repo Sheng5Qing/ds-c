@@ -10,7 +10,6 @@ using namespace std;
 #define OK 1
 #define ERROR 0
 #define INFEASIBLE -1//不可行
-#define OVERFLOW -2 //溢出
 
 typedef int Status;       //返回状态
 /*
@@ -159,16 +158,16 @@ int Index_BF(const SString S, const SString T){
     int i = 1;  //串S的游标
     int j = 1;  //串T的游标
     while(T.ch[j] != '\0'){
-        if(S.ch[i] == T.ch[j]){
+        if(S.ch[i] == T.ch[j]){  //若匹配，则i,j游标前进
             i++;
             j++;
-        }else{
+        }else{  //若不匹配，i返回上次位置的下一位，j会第一位
             i = i - j + 2;
             j = 1;
-            if(i > S.length - T.length + 1){
+            if(i > S.length - T.length + 1){  //若发现S字符串剩余长度小于T字符串长度，则表示不匹配，返回0
                 return 0;
             }
         }
     }
-    return (i - T.length);
+    return (i - T.length);  //返回匹配到的位置
 }
