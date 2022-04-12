@@ -1,5 +1,6 @@
 #include <iterator>
 #include <stdint.h>
+#include <string.h>
 #define _CRT_SECURE_NO_WARNINGS
 
 #include<iostream>
@@ -74,6 +75,9 @@ Status StrDelete(SString& S, int pos, int len);
 //Ïú»Ù×Ö·û´®
 Status DeleteString(SString& S);
 
+//²¡¶¾¼ì²âËã·¨
+Status CheckVirus(const SString person, const SString virus);
+
 int main() {
     SString s1;
     SString s2;
@@ -113,7 +117,16 @@ int main() {
     StrAssign(del, (char*)"helloxxxworld");
     StrDelete(del, 6, 3);
     PrintStr(del);
-
+    //²¡¶¾¼ì²â
+    SString person;
+    StrAssign(person, (char*)"aaabbbba");
+    SString virus;
+    StrAssign(virus, (char*)"baa");
+    if(CheckVirus(person, virus)){
+        printf("yes\n");
+    }else {
+    printf("no\n");
+    }
     return 0;
 }
 
@@ -172,6 +185,7 @@ Status Contact(SString& T, const SString S1, const SString S2) {
     for (int i = T.length + 1; i <= T.length + 1 + S2.length; i++) {
         T.ch[i] = S2.ch[j++];
     }
+    T.length = S1.length + S2.length;
     return OK;
 }
 
@@ -183,6 +197,7 @@ Status SubString(SString& Sub, const SString S, int pos, int len) {
     for (int i = pos; i <= pos + len; i++) {
         Sub.ch[j++] = S.ch[i];
     }
+    Sub.length = len;
     return OK;
 }
 
@@ -373,5 +388,24 @@ Status DeleteString(SString& S) {
     for (int i = 1; i <= S.length; i++) {
         S.ch[i] = ' ';
     }
+    S.length = 0;
     return OK;
+}
+
+//²¡¶¾¼ì²âËã·¨
+Status CheckVirus(const SString person, const SString virus){
+    SString Vring;//²¡¶¾»·×´Á¬½Ó
+    SString Vtmp;//´Ó»·×´²¡¶¾ÖÐµÄÁÙÊ±ÇÐÆ¬£¬ÓÃÒÔ½øÐÐÆ¥Åä
+    Contact(Vring, virus, virus);
+    int flag = 0;
+    int start = 1;
+    while(!flag){
+        SubString(Vtmp, Vring, start, virus.length);
+        flag = Index_KMP(person, Vtmp, 1);
+        start++;
+        if(start + virus.length > Vring.length){
+            return FAlSE;
+        }
+    }
+    return TRUE;
 }
