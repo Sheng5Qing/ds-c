@@ -280,8 +280,8 @@ void get_next(const SString T, int next[]) {//这才是数组引用，存放数组的别名
 void get_nextval(const SString T, int next[], int nextval[]) {
     nextval[1] = 0;
     for (int j = 2; j <= T.length; j++) {
-        if (T.ch[next[j]] == T.ch[j]) {
-            nextval[j] = nextval[next[j]];
+        if (T.ch[next[j]] == T.ch[j]) {  //如果相等，那么继续比较就没有意义了
+            nextval[j] = nextval[next[j]];  
         }
         else {
             nextval[j] = next[j];
