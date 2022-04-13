@@ -13,7 +13,7 @@ using namespace std;
 #define OVERFLOW -2 //溢出
 
 typedef int Status;       //返回状态
-typedef char QElemType;    //栈元素类型
+typedef char QElemType;    //队列元素类型
 
 #define MAXQSIZE 100  //最大队列长度
 typedef struct Qnode{

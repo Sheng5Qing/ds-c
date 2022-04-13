@@ -10,10 +10,9 @@ using namespace std;
 #define OK 1
 #define ERROR 0
 #define INFEASIBLE -1//不可行
-#define OVERFLOW -2 //溢出
 
 typedef int Status;       //返回状态
-typedef char QElemType;    //栈元素类型
+typedef char QElemType;    //队列元素类型
 
 #define MAXQSIZE 100  //队列可能达到的最大长度
 typedef struct{
