@@ -260,7 +260,7 @@ int Index_BF(const SString S, const SString T) {
 //计算next数组
 //不可以声明为int &next[]，C++不允许在数组中存放引用
 //因为next先和[]结合，那么声明的就是引用数组，意思是在数组中元素是引用，而引用不占内存空间，也就不能分配内存
-void get_next(const SString T, int next[]) {//这才是数组引用，存放数组的别名
+void get_next(const SString T, int next[]) {//这才是数组引用，存放数组的别名**补充说明见：/exercise/test.cpp
     next[1] = 0;
     int i = 1;
     int j = 0;
