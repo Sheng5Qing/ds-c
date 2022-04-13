@@ -65,7 +65,7 @@ int main(){
 Status InitQueue(SqQueue &Q){
     Q.base = new QElemType[MAXQSIZE];
     //Q.base = (QElemType*)malloc(MAXQSIZE * sizeof(QElemType));
-    if(!Q.base) exit(OVERFLOW);
+    if(!Q.base) exit(EOVERFLOW);
     Q.front = 0;
     Q.rear = Q.front;
     return OK;
