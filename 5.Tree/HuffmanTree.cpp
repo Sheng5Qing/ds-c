@@ -41,7 +41,9 @@ int main(){
 
 //找到权重最小的两个根结点下标位置
 void select(HuffmanTree Hu, int i, int &s1, int &s2){
+    //先给s1赋一个初值
     int x = 1;
+    //扫描数组，找到第一个根节点
     while (x <= i)
     {
         if (Hu[x].parent == 0) {
@@ -60,6 +62,7 @@ void select(HuffmanTree Hu, int i, int &s1, int &s2){
     x = 1;
     while (x <= i)
     {
+        //给s2赋一个不同于s2的初值
         if (x != s1 && Hu[x].parent == 0) {
             s2 = x;
             break;
