@@ -25,8 +25,12 @@ typedef struct{
 
 //定位顶点下标
 int LocsteVex(const AMGraph G, VerTexType u);
+
 //邻接矩阵表示法创建无向网
 Status CreateUDM(AMGraph &G);
+
+//邻接矩阵实现深度优先搜索
+void DFS(const AMGraph G,VerTexType v1);
 
 int main(){
 
@@ -78,3 +82,19 @@ Status CreateUDM(AMGraph &G){
     return OK;
 }
 
+//邻接矩阵实现深度优先搜索
+void DFS(const AMGraph G,VerTexType v1){
+    cout<<v1;
+    //访问位标记
+    int visited[MVNum] = {0};
+    //找到v1下标
+    int v = LocateVex(G, v1);
+    //该顶点以访问
+    visited[v] = 1;
+    //递归实现深度优先搜索
+    for(int w = 0; w < G.vexnum; w++){
+        if(G.arcs[v][w] != 0 && visited[w] == 0){
+            DFS(G, G.vex[w]);        
+        }
+    }
+}
