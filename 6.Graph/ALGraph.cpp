@@ -73,6 +73,9 @@ int LocsteVex(const ALGraph G, VerTexType u);
 //邻接表创建无向图
 Status CreateUDG(ALGraph &G);
 
+//邻接表实现深度优先搜索
+void DFS(const ALGraph G, VerTexType v1);
+
 //邻接表实现广度优先搜索
 void DFS(const ALGraph G,VerTexType v1);
 
@@ -166,8 +169,32 @@ Status CreateUDG(ALGraph &G){
     return OK;
 }
 
+//邻接表实现深度优先搜索
+void DFS(const ALGraph G, VerTexType v1){
+    //从顶点v1出发深度优先搜索整个G
+    cout << v1;
+    //定位顶点下标
+    int v = LocateVex(G,  v1);
+    //设置访问标志数组
+    int visited[MVNum] = {0};
+    //置v1所在下标已访问
+    visited[v] = 1;
+    //找到第一个与出发顶点邻接的边
+    ArcNode* p = G.vertices[v].firstarc;
+    //边结点非空
+    while(p != NULL){
+        //该邻接点未被访问
+        if(!visited[p->adjvex]){
+            //递归调用DFS
+            DFS(G, G.vertices[p->adjvex].data);
+        }
+        //已访问过，则p指向下一边结点
+            p = p->nextarc;
+    }
+}
+
 //邻接表实现广度优先搜索
-void DFS(const ALGraph G,VerTexType v1){
+void BFS(const ALGraph G,VerTexType v1){
     // 打印出发点
     cout << v1;
     //定位顶点下标
@@ -185,7 +212,8 @@ void DFS(const ALGraph G,VerTexType v1){
         //队头出队,声明u接收
         int u = 0;
         DeQueue(Q, u);
-        for (ArcNode* wptr = G.vertices[u].firstarc; !wptr; wptr = wptr->nextarc) {
+        //依次检查u的所有邻接点w
+        for (ArcNode* wptr = G.vertices[u].firstarc; wptr != NULL; wptr = wptr->nextarc) {
             //如果该边所指向顶点未被访问，入队
             if(!visited[wptr->adjvex]){
                 cout << G.vertices[wptr->adjvex].data;
