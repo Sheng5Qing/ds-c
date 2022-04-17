@@ -57,6 +57,15 @@ void DFS(const AMGraph G,VerTexType v1);
 //邻接矩阵实现广度优先搜索
 void DFS(const AMGraph G,VerTexType v1);
 
+//Prim算法求最小生成树
+//定义辅助数组，用来记录从顶点集U到V-U的权值最小的边
+typedef struct{
+    VerTexType adjvex;          //最小边在U中的那个顶点
+    ArcType lowcost;            //最小边上的权值
+}closedge[MVNum + 1];
+
+void MiniSpanTree_Prim(const AMGraph G,const VerTexType u);
+
 int main(){
 
     return 0;
@@ -192,6 +201,53 @@ void BFS(const AMGraph G,VerTexType v1){
                 cout << G.vex[w];
                 visited[w] = 1;
                 EnQueue(Q, w);
+            }
+        }
+    }
+}
+
+//Prim算法
+//从顶点u出发，构造G的最小生成树T，并输出T的各条边
+void MiniSpanTree_Prim(const AMGraph G,const VerTexType u){
+    closedge closedge;
+    //找到u的下标
+    int k = LocateVex(G, u);
+    //初始化U,因为u本身就在U中，那么最小边就一定是0了
+    closedge[k] = {u,0};                
+    //对于V-U中的每一个顶点vj,初始化closedge[j]
+    for(int j = 0; j < G.vexnum; j++){
+        //本质上就是将V-U中所有顶点与u的边的权值赋值给辅助数组的lowcost,用于与以后的“距离”相比较
+        if(j != k){
+            closedge[j] = {u,G.arcs[k][j]};
+        }
+    }
+    //最小生成树，连通n个节点，只需要n-1条边，循环n-1次
+    for(int i = 1; i < G.vexnum; i++){
+        //找出U中离V-U最近的顶点
+        //即求出T的下一个结点：第k个顶点，closedge[k]中存有最小边
+        //close[k].lowcost初值置为无限
+        int k = MVNum;
+        closedge[k].lowcost = MaxInt;
+        for(int j = 0; j < G.vexnum; j++){
+            //j所指向的顶点在V-U中，且小于当前lowcost值
+            if(closedge[j].lowcost != 0 && closedge[j].lowcost < closedge[k].lowcost){
+                k = j;
+            }//if
+        }//求最小边for
+        //记u0为最小边在V中的一个顶点
+        VerTexType u0 = closedge[k].adjvex;
+        //v0为最小边在V-U中的另一顶点
+        VerTexType v0 = G.vex[k];
+        //输出当前最小边
+        cout << u0  << " " << v0;
+        //将第k个顶点并入U集中
+        closedge[k].lowcost = 0;
+        //新顶点并入U集后，旧顶点与其他顶点的最小边不变，可以从新顶点出发试探更新U与V-U的最小边
+        for(int j = 0; j < G.vexnum; j++){
+            //若发现新顶点与第j的距离小于辅助数组中的距离
+            if(G.arcs[k][j] < closedge[j].lowcost){
+                //替换最小边
+                closedge[j] = {G.vex[k],G.arcs[k][j]};
             }
         }
     }
