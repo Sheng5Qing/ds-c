@@ -1,7 +1,9 @@
 /*图的邻接矩阵存储方式*/
+#include <corecrt_search.h>
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
+#include <type_traits>
 
 using namespace std;
 
@@ -63,8 +65,16 @@ typedef struct{
     VerTexType adjvex;          //最小边在U中的那个顶点
     ArcType lowcost;            //最小边上的权值
 }closedge[MVNum + 1];
-
 void MiniSpanTree_Prim(const AMGraph G,const VerTexType u);
+
+//Kruskal算法求最小生成树
+//辅助边边权值结构体
+typedef struct{
+    VerTexType Head;            //边的始点
+    VerTexType Tail;            //边的终点
+    ArcType lowcost;            //该边上的权值
+}Edge;
+void MiniSpanTree_Kruskal(const AMGraph G);
 
 int main(){
 
@@ -248,6 +258,45 @@ void MiniSpanTree_Prim(const AMGraph G,const VerTexType u){
             if(G.arcs[k][j] < closedge[j].lowcost){
                 //替换最小边
                 closedge[j] = {G.vex[k],G.arcs[k][j]};
+            }
+        }
+    }
+}
+
+int cmp(const void* a, const void* b){
+    //按升序排序
+    return ((Edge*)a)->lowcost - ((Edge*)b)->lowcost;
+}
+
+//Kruskal算法求最小生成树
+void MiniSpanTree_Kruskal(const AMGraph G){
+    //初始化边数组并按权值排序
+    Edge edge[G.arcnum];
+    for(int i = 0; i < G.arcnum; i++){
+        cin>>edge[i].Head>>edge[i].Tail>>edge[i].lowcost;
+    }
+    qsort(edge, G.arcnum, sizeof(Edge), cmp);
+    //辅助数组，用来管理连通分量
+    int Vexset[G.vexnum];
+    //初始化辅助vexset数组，表示开始时所有顶点自成连通分量
+    for(int i = 0; i < G.vexnum; i++){
+        Vexset[i] = i;
+    }
+    //依次查看数组edge中所有的边
+    for(int i = 0; i < G.arcnum; i++){
+        //获得该边始点和终点下标
+        int v1 = LocateVex(G, edge[i].Head);
+        int v2 = LocateVex(G, edge[i].Tail);
+        //若两点连通分量不同，则说明添加此边进去最小生成树不会形成回路
+        if(Vexset[v1] != Vexset[v2]){
+            //输出路径
+            cout<<edge[i].Head<<" "<<edge[i].Tail;
+            //合并两个分量，以防下次添加边形成回路
+            for(int j = 0; j < G.vexnum; j++){
+                //将当前最小生成树中连通点的vexset数组值改为一致
+                if(Vexset[j] == Vexset[v2]){
+                    Vexset[j] = Vexset[v1];
+                }
             }
         }
     }
