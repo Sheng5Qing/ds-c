@@ -45,11 +45,82 @@ typedef struct{
     int vexnum,arcnum;              //图当前的顶点数和边数
 }ALGraph;
 
+//队列数据结构
+typedef int QElemType;    //队列元素类型为顶点下标
+#define MAXQSIZE 100  //队列可能达到的最大长度
+//队列的顺序存储，实现层次遍历
+typedef struct {
+    QElemType* base;  //队列存储空间的基地址
+    int front;  //队头指针
+    int rear;  //队尾指针
+}SqQueue;
+
+//初始化顺序队列
+Status InitQueue(SqQueue& Q);
+
+//判断队空
+Status QueueEmpty(SqQueue Q);
+
+//入队
+Status EnQueue(SqQueue& Q, QElemType e);
+
+//出队
+Status DeQueue(SqQueue& Q, QElemType& e);
+
 //定位顶点下标
 int LocsteVex(const ALGraph G, VerTexType u);
 
 //邻接表创建无向图
 Status CreateUDG(ALGraph &G);
+
+//邻接表实现广度优先搜索
+void DFS(const ALGraph G,VerTexType v1);
+
+int main(){
+    return 0;
+}
+
+//初始化顺序队列
+Status InitQueue(SqQueue& Q) {
+    Q.base = new QElemType[MAXQSIZE];
+    //Q.base = (QElemType*)malloc(MAXQSIZE * sizeof(QElemType));
+    if (!Q.base) exit(EOVERFLOW);
+    Q.front = 0;
+    Q.rear = Q.front;
+    return OK;
+}
+
+//判断队空
+Status QueueEmpty(SqQueue Q) {
+    if (Q.front == Q.rear)
+        return TRUE;
+    else
+        return FAlSE;
+}
+
+//入队
+Status EnQueue(SqQueue& Q, QElemType e) {
+    if (Q.rear + 1 == Q.front) {
+        return ERROR;
+    }
+    else {
+        Q.base[Q.rear] = e;
+        Q.rear = (Q.rear + 1) % MAXQSIZE;
+    }
+    return OK;
+}
+
+//出队
+Status DeQueue(SqQueue& Q, QElemType& e) {
+    if (Q.rear == Q.front) {
+        return ERROR;
+    }
+    else {
+        e = Q.base[Q.front];
+        Q.front = (Q.front + 1) % MAXQSIZE;
+    }
+    return OK;
+}
 
 
 //定位顶点下标
@@ -95,3 +166,32 @@ Status CreateUDG(ALGraph &G){
     return OK;
 }
 
+//邻接表实现广度优先搜索
+void DFS(const ALGraph G,VerTexType v1){
+    // 打印出发点
+    cout << v1;
+    //定位顶点下标
+    int v = LocateVex(G,  v1);
+    //设置访问标志数组
+    int visited[MVNum] = {0};
+    //置v1所在下标已访问
+    visited[v] = 1;
+    //声明队列，并初始化，用以实现广度优先搜索
+    SqQueue Q;
+    InitQueue(Q);
+    EnQueue(Q,  v);
+    //继续广度优先搜索的前提为队列非空
+    while (!QueueEmpty(Q)) {
+        //队头出队,声明u接收
+        int u = 0;
+        DeQueue(Q, u);
+        for (ArcNode* wptr = G.vertices[u].firstarc; !wptr; wptr = wptr->nextarc) {
+            //如果该边所指向顶点未被访问，入队
+            if(!visited[wptr->adjvex]){
+                cout << G.vertices[wptr->adjvex].data;
+                visited[wptr->adjvex] = 1;
+                EnQueue(Q,  wptr->adjvex);
+            }
+        }
+    }
+}
